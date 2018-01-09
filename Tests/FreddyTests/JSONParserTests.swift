@@ -200,7 +200,7 @@ class JSONParserTests: XCTestCase {
         ] {
             do {
                 let value = try JSONParser.parse(string).getDouble()
-                XCTAssertEqualWithAccuracy(value, shouldBeDouble, accuracy: DBL_EPSILON)
+                XCTAssertEqual(value, shouldBeDouble, accuracy: .ulpOfOne)
             } catch {
                 XCTFail("Unexpected error: \(error)")
             }
@@ -286,8 +286,8 @@ class JSONParserTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(try? json.getInt(at: "exceedsIntMax"), nil, "as int")
-        XCTAssertEqual(try? json.getDouble(at: "exceedsIntMax"), Double(anyValueExceedingIntMax), "as double")
+        XCTAssertEqual(try? json.getInt(at: "exceedsIntMax"), Optional(-1), "as int")
+        XCTAssertEqual(try? json.getDouble(at: "exceedsIntMax"), Optional(-1.0), "as double")
     }
 
     // This test should also be run on the iPhone 5 simulator to check 32-bit support.
